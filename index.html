@@ -6,6 +6,17 @@
     
     <title>Calculadora de interés compuesto</title>
     
+    <meta name="description" content="Calculadora profesional de interés compuesto. Analiza tu rentabilidad neta real descontando el IRPF de España y la inflación proyectada para 2026.">
+    <meta name="keywords" content="calculadora interés compuesto, interés compuesto España, IRPF ahorro, rentabilidad real, calculadora financiera, inflación 2026, Nano Wealth">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Nano">
+
+    <meta property="og:title" content="Calculadora de Interés Compuesto | La Verdadera Ganancia">
+    <meta property="og:description" content="Calcula cuánto dinero tendrás realmente tras impuestos e inflación. Herramienta gratuita, precisa y optimizada.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/2344/2344132.png">
+    <meta property="og:url" content="https://micalculadorapro.vercel.app/">
+    <meta property="og:type" content="website">
+
     <link rel="manifest" href="manifest.json">
     
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" type="image/png">
@@ -59,8 +70,7 @@
 
         .user-guide { margin-top: 50px; padding: 30px; background: #161e2d; border-radius: 15px; border: 1px dashed #334155; }
         .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .guide-item { font-size: 0.8rem; line-height: 1.6; color: #94a3b8; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; font-size: 0.8rem; line-height: 1.6; color: #94a3b8; }
         .guide-item b { color: var(--blue); display: block; margin-bottom: 5px; text-transform: uppercase; }
         
         .risk-legend { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
@@ -138,11 +148,11 @@
             <div class="guide-grid">
                 <div class="guide-item">
                     <b>Lógica de Capitalización</b>
-                    Calculamos el interés compuesto mensualmente. Cada mes, tus ganancias se suman al capital para generar nuevos intereses en el siguiente periodo.
+                    Calculamos el interés compuesto mensualmente. Cada mes, tus ganancias se suman al capital para generar nuevos intereses.
                 </div>
                 <div class="guide-item">
                     <b>Hacienda e Inflación</b>
-                    El botón 🇪🇸 aplica el IRPF progresivo sobre beneficios. La línea rosa descuenta la inflación (objetivo 2% del BCE para 2026) para mostrar tu poder de compra real.
+                    El botón 🇪🇸 aplica el IRPF progresivo sobre beneficios (19%-28%). La línea rosa descuenta la inflación proyectada (2% BCE para 2026).
                 </div>
                 <div class="guide-item">
                     <b>Leyenda del Semáforo</b>
@@ -154,7 +164,7 @@
                 </div>
                 <div class="guide-item">
                     <b>Modo de Uso</b>
-                    Ajusta el capital, aportes y tiempo. Usa "¿Qué interés necesito?" para saber qué rentabilidad debes buscar para cumplir tu meta.
+                    Usa "¿Qué interés necesito?" para saber qué rentabilidad debes buscar para cumplir tu meta financiera.
                 </div>
             </div>
         </div>
@@ -276,7 +286,7 @@
                 type: 'line',
                 data: { labels: l, datasets: [
                     { label: tax ? 'Neto' : 'Bruto', data: n, borderColor: tax ? '#ff9900' : '#00ffcc', fill: false, tension: 0.3 },
-                    { label: 'Poder Compra', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false, tension: 0.3 },
+                    { label: 'Valor Real', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false, tension: 0.3 },
                     { label: 'Inversión', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false }
                 ]},
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#f8fafc' } } }, scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { ticks: { color: '#94a3b8' } } } }
