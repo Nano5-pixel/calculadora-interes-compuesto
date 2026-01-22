@@ -29,7 +29,7 @@
         label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 6px; }
         input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 10px; font-family: inherit; box-sizing: border-box; font-size: 0.9rem; }
 
-        .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 15px; border-radius: 12px; border: 1px solid var(--orange); grid-column: 1 / -1; cursor: pointer; }
+        .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 15px; border-radius: 12px; border: 1px solid var(--orange); grid-column: 1 / -1; cursor: pointer; transition: 0.3s; }
         .tax-toggle input { width: auto; margin-right: 15px; accent-color: var(--orange); }
         .tax-toggle label { cursor: pointer; color: var(--orange); font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
 
@@ -42,7 +42,7 @@
         .main-layout { display: flex; flex-direction: column; gap: 25px; margin-top: 35px; }
         @media (min-width: 1024px) { .main-layout { display: grid; grid-template-columns: 380px 1fr; } }
 
-        .result-box { padding: 20px; background: #0b1120; border-radius: 15px; border-left: 6px solid var(--neon); margin-bottom: 15px; transition: border-color 0.5s ease; }
+        .result-box { padding: 20px; background: #0b1120; border-radius: 15px; border-left: 6px solid var(--neon); margin-bottom: 15px; transition: border-left-color 0.4s ease; }
         .res-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
         .res-val { font-size: 1.6rem; color: var(--neon); font-weight: bold; margin-top: 8px; display: block; word-break: break-all; }
         
@@ -54,14 +54,16 @@
         th { background: #1e293b; color: var(--neon); padding: 15px; text-transform: uppercase; position: sticky; top: 0; }
         td { padding: 12px; border-bottom: 1px solid #334155; text-align: center; }
 
-        .user-guide { margin-top: 40px; padding: 30px; background: #161e2d; border-radius: 20px; border: 1px dashed #334155; }
+        /* GUÍA DEL INVERSOR PROFESIONAL MEJORADA */
+        .user-guide { margin-top: 40px; padding: 30px; background: #161e2d; border-radius: 20px; border: 1px solid #334155; }
         .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 15px; }
-        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .guide-section h4 { color: var(--blue); margin: 0 0 15px 0; font-size: 0.9rem; text-transform: uppercase; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .guide-section h4 { color: var(--blue); margin: 0 0 15px 0; font-size: 0.9rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
         .guide-section p, .guide-section li { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; margin: 0; }
-        .guide-section ul { padding-left: 18px; margin-top: 10px; }
-        .guide-section li { margin-bottom: 10px; }
-        .guide-section li b { color: var(--neon); }
+        .guide-section ul { padding-left: 18px; margin-top: 10px; list-style: none; }
+        .guide-section li { margin-bottom: 12px; position: relative; }
+        .guide-section li::before { content: "•"; color: var(--neon); font-weight: bold; position: absolute; left: -15px; }
+        .guide-section li b { color: var(--neon); display: block; }
         .risk-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
 
         .credits { margin-top: 40px; text-align: center; font-size: 0.75rem; color: #475569; letter-spacing: 5px; text-transform: uppercase; }
@@ -99,7 +101,7 @@
             <div class="tax-toggle">
                 <input type="checkbox" id="tax-on" checked>
                 <label for="tax-on">
-                    <span style="font-family: Arial, sans-serif; font-size: 1.2rem;">🇪🇸</span> APLICAR IRPF ESPAÑA
+                    <span style="font-family: Arial, sans-serif; font-size: 1.2rem; font-style: normal;">🇪🇸</span> APLICAR IRPF ESPAÑA (Ahorro)
                 </label>
             </div>
         </div>
@@ -132,30 +134,33 @@
         </div>
 
         <div class="user-guide">
-            <div class="guide-h">📖 Guía del Inversor Profesional</div>
+            <div class="guide-h">💻 Guía del Inversor Profesional</div>
             <div class="guide-grid">
                 <div class="guide-section">
                     <h4>📊 Modos de Cálculo</h4>
+                    <p>Esta herramienta se adapta a tu estrategia financiera:</p>
                     <ul>
-                        <li><b>Ahorro:</b> Proyecta tu capital acumulado final.</li>
-                        <li><b>Tiempo:</b> Calcula los años para tu meta financiera.</li>
-                        <li><b>Cuota:</b> Ahorro mensual necesario para el objetivo.</li>
-                        <li><b>Interés:</b> Rentabilidad anual que requiere tu plan.</li>
+                        <li><b>Ahorro:</b> Proyecta tu capital final acumulado.</li>
+                        <li><b>Tiempo:</b> Calcula los años exactos para lograr tu objetivo.</li>
+                        <li><b>Cuota:</b> Descubre cuánto debes ahorrar cada mes.</li>
+                        <li><b>Interés:</b> Halla la rentabilidad mínima necesaria.</li>
                     </ul>
                 </div>
                 <div class="guide-section">
                     <h4>⚖️ Inflación y Hacienda</h4>
+                    <p>Calculamos tu poder adquisitivo real en España:</p>
                     <ul>
-                        <li><b>IRPF España:</b> Tramos oficiales progresivos (19% a 28%) sobre el beneficio.</li>
-                        <li><b>Inflación:</b> Ajuste al poder adquisitivo real actual.</li>
+                        <li><b>IRPF España:</b> Tramos oficiales progresivos (19% a 28%) aplicados sobre el beneficio.</li>
+                        <li><b>Inflación:</b> Ajuste del capital final según el IPC estimado para conocer el valor real del dinero hoy.</li>
                     </ul>
                 </div>
                 <div class="guide-section">
                     <h4>🚥 Semáforo de Riesgo (Estimado)</h4>
+                    <p>El color del resultado principal indica la viabilidad de tu plan:</p>
                     <ul>
                         <li><span class="risk-dot" style="background:var(--green)"></span><b>Verde (&lt;5%):</b> Conservador. Letras del Tesoro, depósitos.</li>
-                        <li><span class="risk-dot" style="background:var(--yellow)"></span><b>Amarillo (5-9%):</b> Moderado. Índices globales (S&P 500).</li>
-                        <li><span class="risk-dot" style="background:var(--red)"></span><b>Rojo (&gt;9%):</b> Agresivo. Acciones, Cripto.</li>
+                        <li><span class="risk-dot" style="background:var(--yellow)"></span><b>Amarillo (5-9%):</b> Moderado. Fondos indexados globales.</li>
+                        <li><span class="risk-dot" style="background:var(--red)"></span><b>Rojo (&gt;9%):</b> Agresivo. Acciones individuales, criptoactivos.</li>
                     </ul>
                 </div>
             </div>
@@ -180,6 +185,7 @@
                 const el = document.getElementById(id);
                 if (el) el.style.display = visible[m].includes(id) ? 'block' : 'none';
             });
+
             const lbl = document.getElementById('res-label-main');
             if (m === 'interes') lbl.innerText = "INTERÉS NECESARIO:";
             else if (m === 'cuota') lbl.innerText = "CUOTA MENSUAL:";
@@ -218,12 +224,10 @@
             let ap = parseFloat(document.getElementById('aporte').value) || 0, intA = parseFloat(document.getElementById('interes').value) / 100 || 0, anMax = parseInt(document.getElementById('anios').value) || 1;
 
             const resBox = document.getElementById('result-box-main');
-            
-            // Lógica del semáforo dinámica
             let intRealCheck = (modo === 'interes') ? 0 : intA * 100;
-            
+
             if (modo === 'interes') {
-                let low = 0, high = 10; for(let i=0; i<50; i++){ let mid = (low + high) / 2; if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid; }
+                let low = 0, high = 10; for(let i=0; i<55; i++){ let mid = (low + high) / 2; if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid; }
                 intA = high; intRealCheck = intA * 100;
                 document.getElementById('res-nom').innerText = intRealCheck.toFixed(2) + " %";
             } else if (modo === 'cuota') {
@@ -232,10 +236,10 @@
                 ap = (obj - (cap * factor)) / den; document.getElementById('res-nom').innerText = Math.max(0, ap).toLocaleString('es-ES', {style: 'currency', currency: 'EUR'});
             }
 
-            // Aplicar colores del semáforo al borde
-            if (intRealCheck < 5) resBox.style.borderColor = 'var(--green)';
-            else if (intRealCheck <= 9) resBox.style.borderColor = 'var(--yellow)';
-            else resBox.style.borderColor = 'var(--red)';
+            // SEMÁFORO DINÁMICO: Cambio forzado del color del borde izquierdo
+            if (intRealCheck < 5) resBox.style.borderLeftColor = 'var(--green)';
+            else if (intRealCheck <= 9) resBox.style.borderLeftColor = 'var(--yellow)';
+            else resBox.style.borderLeftColor = 'var(--red)';
 
             let bal = cap, tAp = cap, labels = [], dN = [], dR = [], dI = [];
             const tb = document.getElementById('cuerpo-tabla'); tb.innerHTML = "";
@@ -265,7 +269,7 @@
                 data: { labels: l, datasets: [
                     { label: 'Neto', data: n, borderColor: '#00ffcc', backgroundColor: 'rgba(0, 255, 204, 0.1)', fill: true, tension: 0.3 },
                     { label: 'Real', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false, tension: 0.3 },
-                    { label: 'Inversión', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false, tension: 0.3 }
+                    { label: 'Capital', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false, tension: 0.3 }
                 ]},
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
             });
