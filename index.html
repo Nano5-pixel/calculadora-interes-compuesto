@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de interés compuesto</title>
     
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" type="image/png">
+
     <script defer src="/_vercel/insights/script.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,50 +16,60 @@
         :root { --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; --bg: #0f172a; --card: #1e293b; --red: #ff4444; --yellow: #ffcc00; --green: #00ff88; }
         
         body { background-color: var(--bg); color: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 10px; min-height: 100vh; margin: 0; }
-        .container { background-color: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 0 40px rgba(0, 255, 204, 0.2); border: 1px solid #334155; max-width: 1200px; width: 100%; box-sizing: border-box; }
+        .container { background-color: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 0 50px rgba(0, 255, 204, 0.15); border: 1px solid #334155; max-width: 1200px; width: 100%; box-sizing: border-box; }
         
-        h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); text-align: center; text-transform: uppercase; margin-bottom: 5px; font-size: 1.5rem; text-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
-        .subtitle { text-align: center; color: var(--blue); text-transform: uppercase; letter-spacing: 4px; font-size: 0.7rem; font-weight: 700; margin-bottom: 25px; }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); text-align: center; text-transform: uppercase; margin-bottom: 5px; font-size: 1.5rem; text-shadow: 0 0 15px rgba(0, 255, 204, 0.5); }
+        .subtitle { text-align: center; color: var(--blue); text-transform: uppercase; letter-spacing: 4px; font-size: 0.7rem; font-weight: 700; margin-bottom: 30px; }
         
-        @media (min-width: 768px) { h1 { font-size: 2.2rem; } .subtitle { font-size: 0.8rem; letter-spacing: 8px; } body { padding: 20px; } }
+        @media (min-width: 768px) { h1 { font-size: 2.5rem; } .subtitle { font-size: 0.9rem; letter-spacing: 10px; } }
 
-        .mode-selector select { width: 100%; padding: 12px; background: #161e2d; color: var(--neon); border: 2px solid var(--neon); border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-bottom: 20px; font-family: inherit; }
+        .mode-selector select { width: 100%; padding: 15px; background: #161e2d; color: var(--neon); border: 2px solid var(--neon); border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-bottom: 25px; font-family: inherit; }
         
-        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        label { font-size: 0.6rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 4px; }
-        input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 6px; }
+        input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 10px; font-family: inherit; box-sizing: border-box; font-size: 0.9rem; }
 
-        .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 10px; border-radius: 10px; border: 1px solid var(--orange); grid-column: 1 / -1; cursor: pointer; }
-        .tax-toggle input { width: auto; margin-right: 12px; accent-color: var(--orange); }
-        .tax-toggle label { cursor: pointer; color: var(--orange); font-weight: bold; font-size: 0.75rem; }
+        .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 15px; border-radius: 12px; border: 1px solid var(--orange); grid-column: 1 / -1; cursor: pointer; transition: 0.3s; }
+        .tax-toggle:hover { background: rgba(255, 153, 0, 0.2); }
+        .tax-toggle input { width: auto; margin-right: 15px; accent-color: var(--orange); }
+        .tax-toggle label { cursor: pointer; color: var(--orange); font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
 
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
-        button { width: 100%; padding: 15px; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; transition: 0.3s; font-family: inherit; }
-        .btn-main { background: linear-gradient(135deg, var(--neon), var(--blue)); border: none; color: #0f172a; }
-        .btn-reset { background: transparent; border: 1px solid #334155; color: #94a3b8; font-size: 0.7rem; }
-        .btn-reset:hover { border-color: var(--pink); color: var(--pink); }
+        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        button { width: 100%; padding: 18px; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; transition: 0.3s; font-family: inherit; }
+        .btn-main { background: linear-gradient(135deg, var(--neon), var(--blue)); border: none; color: #0f172a; box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3); }
+        .btn-main:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-reset { background: transparent; border: 1px solid #334155; color: #94a3b8; font-size: 0.75rem; }
+        .btn-reset:hover { border-color: var(--pink); color: var(--pink); background: rgba(255, 0, 255, 0.05); }
 
-        .main-layout { display: flex; flex-direction: column; gap: 20px; margin-top: 25px; }
-        @media (min-width: 1024px) { .main-layout { display: grid; grid-template-columns: 350px 1fr; } }
+        .main-layout { display: flex; flex-direction: column; gap: 25px; margin-top: 35px; }
+        @media (min-width: 1024px) { .main-layout { display: grid; grid-template-columns: 380px 1fr; } }
 
-        .result-box { padding: 15px; background: #0b1120; border-radius: 15px; border-left: 5px solid var(--neon); margin-bottom: 10px; }
-        .res-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
-        .res-val { font-size: 1.4rem; color: var(--neon); font-weight: bold; margin-top: 5px; display: block; word-break: break-all; }
+        .result-box { padding: 20px; background: #0b1120; border-radius: 15px; border-left: 6px solid var(--neon); margin-bottom: 15px; transition: 0.3s; }
+        .result-box:hover { transform: translateX(5px); }
+        .res-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .res-val { font-size: 1.6rem; color: var(--neon); font-weight: bold; margin-top: 8px; display: block; word-break: break-all; }
         
-        .chart-container { background: #0b1120; padding: 10px; border-radius: 15px; height: 300px; border: 1px solid #334155; position: relative; }
-        @media (min-width: 768px) { .chart-container { height: 450px; } }
+        .chart-container { background: #0b1120; padding: 15px; border-radius: 20px; height: 350px; border: 1px solid #334155; position: relative; }
+        @media (min-width: 768px) { .chart-container { height: 500px; padding: 25px; } }
 
-        .table-wrapper { overflow-x: auto; border: 1px solid #334155; border-radius: 10px; margin-top: 15px; background: #0b1120; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.7rem; min-width: 400px; }
-        th { background: #1e293b; color: var(--neon); padding: 10px; text-transform: uppercase; }
-        td { padding: 8px; border-bottom: 1px solid #334155; text-align: center; }
+        .table-wrapper { overflow-x: auto; border: 1px solid #334155; border-radius: 15px; margin-top: 20px; background: #0b1120; max-height: 400px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 450px; }
+        th { background: #1e293b; color: var(--neon); padding: 15px; text-transform: uppercase; position: sticky; top: 0; }
+        td { padding: 12px; border-bottom: 1px solid #334155; text-align: center; }
 
-        .user-guide { margin-top: 30px; padding: 25px; background: #161e2d; border-radius: 15px; border: 1px dashed #334155; }
-        .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; font-size: 0.75rem; color: #94a3b8; }
-        .guide-item b { color: var(--blue); display: block; margin-bottom: 5px; }
+        /* GUÍA DEL INVERSOR MEJORADA */
+        .user-guide { margin-top: 40px; padding: 30px; background: #161e2d; border-radius: 20px; border: 1px dashed #334155; }
+        .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .guide-section { background: rgba(15, 23, 42, 0.4); padding: 20px; border-radius: 12px; border: 1px solid #1e293b; }
+        .guide-section h4 { color: var(--blue); margin: 0 0 12px 0; font-size: 0.9rem; text-transform: uppercase; }
+        .guide-section p, .guide-section li { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; margin: 0; }
+        .guide-section ul { padding-left: 18px; margin-top: 10px; }
+        .guide-section li { margin-bottom: 8px; }
+        .guide-section li b { color: var(--neon); }
+        .risk-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
 
-        .credits { margin-top: 30px; text-align: center; font-size: 0.7rem; color: #475569; letter-spacing: 3px; text-transform: uppercase; }
+        .credits { margin-top: 40px; text-align: center; font-size: 0.75rem; color: #475569; letter-spacing: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -78,12 +90,12 @@
         <div class="grid-inputs">
             <div id="div-objetivo" style="display:none;"><label>Objetivo (€)</label><input type="number" id="objetivo" value="100000" min="0"></div>
             <div id="div-capital"><label>Cap. Inicial (€)</label><input type="number" id="capital" value="5000" min="0"></div>
-            <div id="div-aporte"><label>Aporte Mes (€)</label><input type="number" id="aporte" value="500" min="0"></div>
+            <div id="div-aporte"><label>Aporte Mensual (€)</label><input type="number" id="aporte" value="500" min="0"></div>
             <div id="div-interes"><label>Interés Anual (%)</label><input type="number" id="interes" value="10" min="0" step="0.1"></div>
             <div id="div-anios"><label>Años de Inversión</label><input type="number" id="anios" value="20" min="1" step="1"></div>
             <div id="div-inflacion"><label>Inflación Estimada (%)</label><input type="number" id="inflacion" value="2" min="0" step="0.1"></div>
             <div id="div-momento">
-                <label>Momento del Aporte</label>
+                <label>Frecuencia de Depósito</label>
                 <select id="momento">
                     <option value="fin">Al final del mes</option>
                     <option value="inicio">Al inicio del mes</option>
@@ -92,29 +104,29 @@
             <div class="tax-toggle">
                 <input type="checkbox" id="tax-on" checked>
                 <label for="tax-on">
-                    <span style="font-family: Arial, sans-serif; font-size: 1.1rem; vertical-align: middle;">🇪🇸</span> APLICAR IRPF ESPAÑA
+                    <span style="font-family: Arial, sans-serif; font-size: 1.2rem;">🇪🇸</span> APLICAR IRPF ESPAÑA (Ahorro)
                 </label>
             </div>
         </div>
 
         <div class="btn-group">
-            <button class="btn-main" onclick="ejecutarCalculo()">Analizar Plan</button>
-            <button class="btn-reset" onclick="reiniciarDatos()">🗑️ Limpiar Datos</button>
+            <button class="btn-main" onclick="ejecutarCalculo()">Analizar Plan Financiero</button>
+            <button class="btn-reset" onclick="reiniciarDatos()">🗑️ Limpiar Todos los Datos</button>
         </div>
 
         <div class="main-layout">
             <div class="data-side">
                 <div class="result-box">
-                    <span class="res-label">RESULTADO BRUTO ESTIMADO:</span>
+                    <span class="res-label">CAPITAL BRUTO FINAL:</span>
                     <span class="res-val" id="res-nom">0,00 €</span>
                 </div>
-                <div class="result-box" style="border-color: var(--pink);">
-                    <span class="res-label">PODER DE COMPRA REAL (NETO):</span>
+                <div class="result-box" style="border-color: var(--pink); background: rgba(255, 0, 255, 0.03);">
+                    <span class="res-label" style="color: var(--pink);">PODER DE COMPRA REAL (NETO):</span>
                     <span class="res-val" id="res-real" style="color: var(--pink);">0,00 €</span>
                 </div>
                 <div class="table-wrapper">
                     <table>
-                        <thead><tr><th>Año</th><th>Aportado</th><th>Balance</th><th>Real (Neto)</th></tr></thead>
+                        <thead><tr><th>Año</th><th>Invertido</th><th>Balance</th><th>Real (Neto)</th></tr></thead>
                         <tbody id="cuerpo-tabla"></tbody>
                     </table>
                 </div>
@@ -125,29 +137,39 @@
         </div>
 
         <div class="user-guide">
-            <div class="guide-h">Guía del Inversor Profesional</div>
+            <div class="guide-h">📖 Guía del Inversor Profesional</div>
             <div class="guide-grid">
-                <div class="guide-item">
-                    <b>Inflación y Hacienda</b>
-                    Calculamos tu poder adquisitivo real descontando la inflación proyectada y aplicando los tramos oficiales progresivos (19% - 28%) del **IRPF de España** sobre los beneficios.
+                <div class="guide-section">
+                    <h4>📊 Cómo usar esta herramienta</h4>
+                    <p>Selecciona tu objetivo arriba. La calculadora ajustará los campos automáticamente:</p>
+                    <ul>
+                        <li><b>Ahorro:</b> Proyecta tu riqueza final.</li>
+                        <li><b>Tiempo:</b> Calcula los años necesarios para jubilarte.</li>
+                        <li><b>Cuota:</b> Descubre cuánto ahorrar al mes para tu meta.</li>
+                        <li><b>Interés:</b> Halla la rentabilidad mínima que necesitas.</li>
+                    </ul>
                 </div>
-                <div class="guide-item">
-                    <b>Modos de Cálculo</b>
-                    • <b>Ahorro:</b> Capital final acumulado.<br>
-                    • <b>Tiempo:</b> Años para lograr objetivo.<br>
-                    • <b>Cuota:</b> Ahorro mensual necesario.<br>
-                    • <b>Interés:</b> Rentabilidad requerida.
+                <div class="guide-section">
+                    <h4>⚖️ Hacienda e Inflación</h4>
+                    <p>Un error común es ignorar que el dinero pierde valor. Aquí aplicamos:</p>
+                    <ul>
+                        <li><b>IRPF España:</b> Tramos oficiales (19%, 21%, 23%, 27%, 28%) sobre el beneficio generado.</li>
+                        <li><b>Inflación:</b> Ajustamos el capital final al poder de compra de hoy (valor real).</li>
+                    </ul>
                 </div>
-                <div class="guide-item">
-                    <b>Semáforo de Riesgo (Estimado)</b>
-                    <span style="color: var(--green);">● Verde: < 5%</span> (Conservador)<br>
-                    <span style="color: var(--yellow);">● Amarillo: 5-9%</span> (Moderado)<br>
-                    <span style="color: var(--red);">● Rojo: > 9%</span> (Agresivo).
+                <div class="guide-section">
+                    <h4>🚥 Semáforo de Riesgo Anual</h4>
+                    <p>Evalúa si tu rentabilidad esperada es realista según el mercado actual:</p>
+                    <ul>
+                        <li><span class="risk-dot" style="background:var(--green)"></span><b>Bajo (&lt;5%):</b> Perfil conservador (Letras, Depósitos).</li>
+                        <li><span class="risk-dot" style="background:var(--yellow)"></span><b>Medio (5-9%):</b> Perfil moderado (Índices como S&P 500).</li>
+                        <li><span class="risk-dot" style="background:var(--red)"></span><b>Alto (&gt;9%):</b> Perfil agresivo (Acciones individuales, Cripto).</li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <div class="credits">Made by <b>Nano</b></div>
+        <div class="credits">Desarrollado por <b>Nano</b> | 2026 Edition</div>
     </div>
 
     <script>
@@ -156,7 +178,7 @@
         function cambiarModo() {
             const m = document.getElementById('modo').value;
             const ids = ['div-objetivo', 'div-capital', 'div-aporte', 'div-interes', 'div-anios'];
-            const visiblePorModo = {
+            const configuracion = {
                 'ahorro': ['div-capital', 'div-aporte', 'div-interes', 'div-anios'],
                 'tiempo': ['div-objetivo', 'div-capital', 'div-aporte', 'div-interes'],
                 'cuota': ['div-objetivo', 'div-capital', 'div-interes', 'div-anios'],
@@ -164,7 +186,8 @@
             };
             
             ids.forEach(id => {
-                document.getElementById(id).style.display = visiblePorModo[m].includes(id) ? 'block' : 'none';
+                const el = document.getElementById(id);
+                if (el) el.style.display = configuracion[m].includes(id) ? 'block' : 'none';
             });
         }
 
@@ -182,7 +205,8 @@
             if (beneficio <= 6000) return beneficio * 0.19;
             if (beneficio <= 50000) return (6000 * 0.19) + (beneficio - 6000) * 0.21;
             if (beneficio <= 200000) return (6000 * 0.19) + (44000 * 0.21) + (beneficio - 50000) * 0.23;
-            return (6000 * 0.19) + (44000 * 0.21) + (150000 * 0.23) + (beneficio - 200000) * 0.27;
+            if (beneficio <= 300000) return (6000 * 0.19) + (44000 * 0.21) + (150000 * 0.23) + (beneficio - 200000) * 0.27;
+            return (6000 * 0.19) + (44000 * 0.21) + (150000 * 0.23) + (100000 * 0.27) + (beneficio - 300000) * 0.28;
         }
 
         function fv(P, PMT, r, n, momento) {
@@ -198,7 +222,7 @@
             let ap = parseFloat(document.getElementById('aporte').value) || 0, intA = parseFloat(document.getElementById('interes').value) / 100 || 0, anMax = parseInt(document.getElementById('anios').value) || 1;
 
             if (modo === 'interes') {
-                let low = 0, high = 5; for(let i=0; i<40; i++){ let mid = (low + high) / 2; if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid; }
+                let low = 0, high = 10; for(let i=0; i<50; i++){ let mid = (low + high) / 2; if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid; }
                 intA = high; document.getElementById('res-nom').innerText = (intA * 100).toFixed(2) + " %";
             } else if (modo === 'cuota') {
                 const n = anMax * 12, r = intA / 12, factor = Math.pow(1 + r, n);
@@ -216,8 +240,8 @@
                 if (m % 12 === 0 || m === mesesTotales) {
                     let a = m/12, bNeto = bal - (useTax ? calcularIRPF(bal - tAp) : 0);
                     let bReal = bNeto / Math.pow(1 + infla, a);
-                    labels.push("Año "+a.toFixed(0)); dN.push(bNeto.toFixed(2)); dR.push(bReal.toFixed(2)); dI.push(tAp.toFixed(2));
-                    tb.innerHTML += `<tr><td>${a.toFixed(0)}</td><td>${Math.round(tAp).toLocaleString()}€</td><td>${Math.round(bNeto).toLocaleString()}€</td><td>${Math.round(bReal).toLocaleString()}€</td></tr>`;
+                    labels.push("A"+Math.round(a)); dN.push(bNeto.toFixed(2)); dR.push(bReal.toFixed(2)); dI.push(tAp.toFixed(2));
+                    tb.innerHTML += `<tr><td>${Math.round(a)}</td><td>${Math.round(tAp).toLocaleString()}€</td><td>${Math.round(bNeto).toLocaleString()}€</td><td style="color:var(--pink); font-weight:bold;">${Math.round(bReal).toLocaleString()}€</td></tr>`;
                     if (modo === 'tiempo' && bNeto >= obj) { document.getElementById('res-nom').innerText = a.toFixed(1) + " años"; break; }
                 }
             }
@@ -232,11 +256,11 @@
             grafico = new Chart(ctx, {
                 type: 'line',
                 data: { labels: l, datasets: [
-                    { label: 'Valor Neto', data: n, borderColor: '#00ffcc', fill: false, tension: 0.3 },
-                    { label: 'Poder Real', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false },
-                    { label: 'Aportado', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false }
+                    { label: 'Neto', data: n, borderColor: '#00ffcc', backgroundColor: 'rgba(0, 255, 204, 0.1)', fill: true, tension: 0.3 },
+                    { label: 'Real', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false, tension: 0.3 },
+                    { label: 'Capital', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false, tension: 0.3 }
                 ]},
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#334155' } }, x: { grid: { display: false } } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
             });
         }
         
