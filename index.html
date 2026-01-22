@@ -15,7 +15,7 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap');
-        :root { --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; --bg: #0f172a; --card: #1e293b; }
+        :root { --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; --bg: #0f172a; --card: #1e293b; --red: #ff4444; --yellow: #ffcc00; --green: #00ff88; }
         
         body { background-color: var(--bg); color: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 10px; min-height: 100vh; margin: 0; }
         .container { background-color: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 0 40px rgba(0, 255, 204, 0.2); border: 1px solid #334155; max-width: 1200px; width: 100%; box-sizing: border-box; }
@@ -55,13 +55,19 @@
         th { background: #1e293b; color: var(--neon); padding: 10px; text-transform: uppercase; }
         td { padding: 8px; border-bottom: 1px solid #334155; text-align: center; }
 
+        /* Estilos recuperados para la guía */
+        .user-guide { margin-top: 30px; padding: 20px; background: #161e2d; border-radius: 15px; border: 1px dashed #334155; }
+        .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; font-size: 0.75rem; color: #94a3b8; }
+        .guide-item b { color: var(--blue); display: block; margin-bottom: 5px; }
+
         .credits { margin-top: 30px; text-align: center; font-size: 0.7rem; color: #475569; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Interés Compuesto</h1>
+        <h1>Calculadora de interés compuesto</h1>
         <p class="subtitle">Nano Edition</p>
 
         <div class="mode-selector">
@@ -119,6 +125,22 @@
             </div>
             <div class="chart-side">
                 <div class="chart-container"><canvas id="miGrafico"></canvas></div>
+            </div>
+        </div>
+
+        <div class="user-guide">
+            <div class="guide-h">Guía del Inversor</div>
+            <div class="guide-grid">
+                <div class="guide-item">
+                    <b>Inflación y Hacienda</b>
+                    Calculamos tu poder adquisitivo real descontando la inflación proyectada y aplicando los tramos oficiales del **IRPF de España**.
+                </div>
+                <div class="guide-item">
+                    <b>Semáforo de Riesgo</b>
+                    <span style="color: var(--green);">● Verde: &lt; 5%</span> (Conservador)<br>
+                    <span style="color: var(--yellow);">● Amarillo: 5-9%</span> (Moderado)<br>
+                    <span style="color: var(--red);">● Rojo: &gt; 9%</span> (Agresivo)
+                </div>
             </div>
         </div>
 
