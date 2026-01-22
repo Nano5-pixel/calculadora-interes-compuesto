@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Calculadora de interés compuesto</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" type="image/png">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap');
+        
+        :root { 
+            --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; 
+            --bg: #0f172a; --card: #1e293b; --red: #ff4444; --yellow: #ffcc00; --green: #00ff88; 
+        }
+        
+        body { background-color: var(--bg); color: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 20px; min-height: 100vh; }
+        .container { background-color: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 0 40px rgba(0, 255, 204, 0.2); border: 1px solid #334155; max-width: 1200px; width: 100%; }
+        
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; font-size: 2.2rem; text-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
+        .subtitle { text-align: center; color: var(--blue); text-transform: uppercase; letter-spacing: 8px; font-size: 0.8rem; font-weight: 700; margin-bottom: 35px; }
+        
+        .mode-selector select { width: 100%; padding: 15px; background: #161e2d; color: var(--neon); border: 2px solid var(--neon); border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-bottom: 25px; font-family: inherit; }
+        
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; font-family: inherit; }
+        
+        .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 10px; border-radius: 10px; border: 1px solid var(--orange); grid-column: span 2; cursor: pointer; }
+        .tax-toggle input { width: auto; margin-right: 12px; accent-color: var(--orange); }
+        .flag { width: 22px; margin-right: 8px; vertical-align: middle; }
+
+        button { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--neon), var(--blue)); border: none; color: #0f172a; font-weight: 900; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        button:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 255, 204, 0.4); }
+
+        .main-layout { display: grid; grid-template-columns: 380px 1fr; gap: 30px; margin-top: 35px; }
+        @media (max-width: 1050px) { .main-layout { grid-template-columns: 1fr; } }
+
+        .result-box { padding: 20px; background: #0b1120; border-radius: 15px; border-left: 5px solid var(--neon); margin-bottom: 12px; position: relative; }
+        .res-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; display: block; }
+        .res-val { font-size: 1.7rem; color: var(--neon); font-weight: bold; display: block; margin-top: 5px; }
+        
+        .risk-badge { margin-top: 10px; padding: 8px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; display: none; text-align: center; }
+        .risk-green { background: rgba(0, 255, 136, 0.2); color: var(--green); border: 1px solid var(--green); }
+        .risk-yellow { background: rgba(255, 204, 0, 0.2); color: var(--yellow); border: 1px solid var(--yellow); }
+        .risk-red { background: rgba(255, 68, 68, 0.2); color: var(--red); border: 1px solid var(--red); }
+
+        .chart-container { background: #0b1120; padding: 20px; border-radius: 15px; height: 500px; border: 1px solid #334155; }
+        .table-wrapper { max-height: 350px; overflow-y: auto; border: 1px solid #334155; border-radius: 10px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { background: #1e293b; color: var(--neon); padding: 12px; position: sticky; top: 0; text-transform: uppercase; }
+        td { padding: 10px; border-bottom: 1px solid #334155; text-align: center; }
+
+        .user-guide { margin-top: 50px; padding: 30px; background: #161e2d; border-radius: 15px; border: 1px dashed #334155; }
+        .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .guide-item { font-size: 0.8rem; line-height: 1.6; color: #94a3b8; }
+        .guide-item b { color: var(--blue); display: block; margin-bottom: 5px; text-transform: uppercase; }
+        
+        .risk-legend { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .legend-row { display: flex; align-items: center; gap: 10px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        .credits { margin-top: 50px; text-align: center; font-size: 0.8rem; color: #475569; letter-spacing: 5px; text-transform: uppercase; }
+        .credits b { color: var(--neon); font-weight: 900; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Calculadora de Interés Compuesto</h1>
+        <p class="subtitle">La verdadera ganancia</p>
+
+        <div class="mode-selector">
+            <select id="modo" onchange="cambiarModo()">
+                <option value="ahorro">¿Cuánto dinero tendré en X años?</option>
+                <option value="tiempo">¿Cuánto tardaré en alcanzar mi objetivo?</option>
+                <option value="cuota">¿Cuánto necesito ahorrar cada mes?</option>
+                <option value="interes">¿Qué interés necesito para mi objetivo?</option>
+            </select>
+        </div>
+        
+        <div class="grid-inputs">
+            <div id="div-objetivo" style="display:none;"><label>Objetivo (€)</label><input type="number" id="objetivo" value="100000"></div>
+            <div><label>Cap. Inicial (€)</label><input type="number" id="capital" value="5000"></div>
+            <div id="div-aporte"><label>Aporte Mes (€)</label><input type="number" id="aporte" value="500"></div>
+            <div id="div-interes"><label>Interés %</label><input type="number" id="interes" value="10"></div>
+            <div id="div-anios"><label>Años</label><input type="number" id="anios" value="20"></div>
+            <div><label>Inflación %</label><input type="number" id="inflacion" value="2"></div>
+            <div>
+                <label>Depósitos</label>
+                <select id="momento">
+                    <option value="fin">Al final del mes</option>
+                    <option value="inicio">Al inicio del mes</option>
+                </select>
+            </div>
+            <div class="tax-toggle">
+                <input type="checkbox" id="tax-on">
+                <label for="tax-on" style="color:var(--orange); cursor:pointer; font-weight:bold; font-size:0.75rem;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/20px-Flag_of_Spain.svg.png" class="flag"> APLICAR IRPF ESPAÑA
+                </label>
+            </div>
+        </div>
+
+        <button onclick="ejecutarCalculo()">Analizar Plan Financiero</button>
+
+        <div class="main-layout">
+            <div class="data-side">
+                <div class="result-box" id="box-nom">
+                    <span class="res-label" id="lbl-nom">RESULTADO NOMINAL (BRUTO):</span>
+                    <span class="res-val" id="res-nom">0,00 €</span>
+                    <div id="risk-badge" class="risk-badge"></div>
+                </div>
+                <div class="result-box" style="border-color: var(--pink);">
+                    <span class="res-label">PODER DE COMPRA REAL:</span>
+                    <span class="res-val" id="res-real" style="color: var(--pink); font-size: 1.4rem;">0,00 €</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Año</th><th>Aportado</th><th id="th-val">Balance</th><th>Real</th></tr></thead>
+                        <tbody id="cuerpo-tabla"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-side">
+                <div class="chart-container"><canvas id="miGrafico"></canvas></div>
+            </div>
+        </div>
+
+        <div class="user-guide">
+            <div class="guide-h">Manual del Inversor Inteligente</div>
+            <div class="guide-grid">
+                <div class="guide-item">
+                    <b>Lógica de Capitalización</b>
+                    Calculamos el interés compuesto mensualmente. Cada mes, tus ganancias se suman al capital para generar nuevos intereses en el siguiente periodo.
+                </div>
+                <div class="guide-item">
+                    <b>Hacienda e Inflación</b>
+                    El botón 🇪🇸 aplica el IRPF progresivo sobre beneficios. La línea rosa descuenta la inflación (objetivo 2% del BCE para 2026) para mostrar tu poder de compra real.
+                </div>
+                <div class="guide-item">
+                    <b>Leyenda del Semáforo</b>
+                    <div class="risk-legend">
+                        <div class="legend-row"><div class="dot" style="background:var(--green)"></div> <span><b>< 5%:</b> Riesgo Bajo (Bonos).</span></div>
+                        <div class="legend-row"><div class="dot" style="background:var(--yellow)"></div> <span><b>5-9%:</b> Riesgo Medio (Mercado).</span></div>
+                        <div class="legend-row"><div class="dot" style="background:var(--red)"></div> <span><b>> 9%:</b> Riesgo Alto (Especulativo).</span></div>
+                    </div>
+                </div>
+                <div class="guide-item">
+                    <b>Modo de Uso</b>
+                    Ajusta el capital, aportes y tiempo. Usa "¿Qué interés necesito?" para saber qué rentabilidad debes buscar para cumplir tu meta.
+                </div>
+            </div>
+        </div>
+
+        <div class="credits">Made by <b>Nano</b></div>
+    </div>
+
+    <script>
+        let grafico;
+
+        function cambiarModo() {
+            const m = document.getElementById('modo').value;
+            document.getElementById('div-objetivo').style.display = (m === 'ahorro') ? 'none' : 'block';
+            document.getElementById('div-aporte').style.display = (m === 'cuota') ? 'none' : 'block';
+            document.getElementById('div-interes').style.display = (m === 'interes') ? 'none' : 'block';
+            document.getElementById('div-anios').style.display = (m === 'tiempo') ? 'none' : 'block';
+            document.getElementById('risk-badge').style.display = 'none';
+        }
+
+        function calcularIRPF(beneficio) {
+            if (beneficio <= 0) return 0;
+            if (beneficio <= 6000) return beneficio * 0.19;
+            if (beneficio <= 50000) return (6000 * 0.19) + (beneficio - 6000) * 0.21;
+            if (beneficio <= 200000) return (6000 * 0.19) + (44000 * 0.21) + (beneficio - 50000) * 0.23;
+            if (beneficio <= 300000) return (6000 * 0.19) + (44000 * 0.21) + (150000 * 0.23) + (beneficio - 200000) * 0.27;
+            return (6000 * 0.19) + (44000 * 0.21) + (150000 * 0.23) + (100000 * 0.27) + (beneficio - 300000) * 0.28;
+        }
+
+        function fv(P, PMT, r, n, momento) {
+            if (r === 0) return P + (PMT * n);
+            const comp = Math.pow(1 + r, n);
+            let res = P * comp;
+            if (momento === 'inicio') res += PMT * (1 + r) * (comp - 1) / r;
+            else res += PMT * (comp - 1) / r;
+            return res;
+        }
+
+        function ejecutarCalculo() {
+            const modo = document.getElementById('modo').value;
+            const useTax = document.getElementById('tax-on').checked;
+            const cap = parseFloat(document.getElementById('capital').value) || 0;
+            const obj = parseFloat(document.getElementById('objetivo').value) || 0;
+            const infla = parseFloat(document.getElementById('inflacion').value) / 100;
+            const mom = document.getElementById('momento').value;
+            let ap = parseFloat(document.getElementById('aporte').value) || 0;
+            let intA = parseFloat(document.getElementById('interes').value) / 100 || 0;
+            let anMax = parseInt(document.getElementById('anios').value) || 20;
+
+            const badge = document.getElementById('risk-badge');
+            badge.style.display = 'none';
+
+            document.getElementById('lbl-nom').innerText = useTax ? "RESULTADO NETO (TRAS IRPF):" : "RESULTADO NOMINAL (BRUTO):";
+            document.getElementById('box-nom').style.borderColor = useTax ? 'var(--orange)' : 'var(--neon)';
+            document.getElementById('res-nom').style.color = useTax ? 'var(--orange)' : 'var(--neon)';
+            document.getElementById('th-val').innerText = useTax ? "Neto" : "Bruto";
+
+            if (modo === 'interes') {
+                let low = 0, high = 10; 
+                for(let i=0; i<40; i++){
+                    let mid = (low + high) / 2;
+                    if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid;
+                }
+                intA = high;
+                const finalPct = intA * 100;
+                document.getElementById('res-nom').innerText = finalPct.toFixed(3) + " %";
+                badge.style.display = 'block';
+                if(finalPct < 5) { badge.className = 'risk-badge risk-green'; badge.innerText = 'Riesgo Bajo (Consolidado)'; }
+                else if(finalPct < 9) { badge.className = 'risk-badge risk-yellow'; badge.innerText = 'Riesgo Medio (Mercado)'; }
+                else { badge.className = 'risk-badge risk-red'; badge.innerText = 'Riesgo Alto (Especulativo)'; }
+            } else if (modo === 'cuota') {
+                const n = anMax * 12, r = intA / 12;
+                const factor = Math.pow(1 + r, n);
+                const den = (mom === 'inicio') ? ((factor - 1) / r) * (1 + r) : (factor - 1) / r;
+                ap = (obj - (cap * factor)) / den;
+                document.getElementById('res-nom').innerText = (ap > 0) ? ap.toLocaleString('es-ES', {style: 'currency', currency: 'EUR'}) : "Alcanzado";
+            }
+
+            let bal = cap, tAp = cap, labels = [], dN = [], dR = [], dI = [];
+            const tb = document.getElementById('cuerpo-tabla'); tb.innerHTML = "";
+            let mC = 0, aC = 0, logr = false;
+
+            while (mC < 1200) {
+                mC++;
+                if (mom === 'inicio') bal = (bal + ap) * (1 + intA/12);
+                else bal = (bal * (1 + intA/12)) + ap;
+                tAp += ap;
+                let bNeto = bal - (useTax ? calcularIRPF(bal - tAp) : 0);
+
+                if (mC % 12 === 0) {
+                    aC = mC / 12;
+                    let bReal = bNeto / Math.pow(1 + infla, aC);
+                    labels.push("Año " + aC); dN.push(bNeto.toFixed(2)); dR.push(bReal.toFixed(2)); dI.push(tAp.toFixed(2));
+                    tb.innerHTML += `<tr><td>${aC}</td><td>${Math.round(tAp).toLocaleString()}€</td><td>${Math.round(bNeto).toLocaleString()}€</td><td>${Math.round(bReal).toLocaleString()}€</td></tr>`;
+                    if (modo !== 'tiempo' && aC >= anMax) break;
+                }
+                if (modo === 'tiempo' && bNeto >= obj && !logr) {
+                    document.getElementById('res-nom').innerText = `${Math.floor(mC/12)} años y ${mC%12} meses`;
+                    logr = true;
+                    if (mC % 12 !== 0) {
+                        aC = Math.ceil(mC / 12);
+                        labels.push("Año " + aC); dN.push(bNeto.toFixed(2)); dR.push((bNeto / Math.pow(1 + infla, aC)).toFixed(2)); dI.push(tAp.toFixed(2));
+                    }
+                    break;
+                }
+            }
+            if (modo === 'ahorro') {
+                let fNet = bal - (useTax ? calcularIRPF(bal - tAp) : 0);
+                document.getElementById('res-nom').innerText = fNet.toLocaleString('es-ES', {style: 'currency', currency: 'EUR'});
+            }
+            let finalN = bal - (useTax ? calcularIRPF(bal - tAp) : 0);
+            document.getElementById('res-real').innerText = (finalN / Math.pow(1 + infla, mC/12)).toLocaleString('es-ES', {style: 'currency', currency: 'EUR'});
+            actualizarGrafico(labels, dN, dR, dI, useTax);
+        }
+
+        function actualizarGrafico(l, n, r, i, tax) {
+            const ctx = document.getElementById('miGrafico').getContext('2d');
+            if (grafico) grafico.destroy();
+            grafico = new Chart(ctx, {
+                type: 'line',
+                data: { labels: l, datasets: [
+                    { label: tax ? 'Neto' : 'Bruto', data: n, borderColor: tax ? '#ff9900' : '#00ffcc', fill: false, tension: 0.3 },
+                    { label: 'Poder Compra', data: r, borderColor: '#ff00ff', borderDash: [5, 5], fill: false, tension: 0.3 },
+                    { label: 'Inversión', data: i, borderColor: '#0099ff', borderDash: [2, 2], fill: false }
+                ]},
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#f8fafc' } } }, scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { ticks: { color: '#94a3b8' } } } }
+            });
+        }
+        ejecutarCalculo();
+    </script>
+</body>
+</html>
