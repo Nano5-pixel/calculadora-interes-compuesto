@@ -16,56 +16,38 @@
     <meta property="og:url" content="https://micalculadorapro.vercel.app/">
     <meta property="og:type" content="website">
 
+    <script defer src="/_vercel/insights/script.js"></script>
+
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2344/2344132.png" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap');
-        
-        :root { 
-            --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; 
-            --bg: #0f172a; --card: #1e293b; --red: #ff4444; --yellow: #ffcc00; --green: #00ff88; 
-        }
-        
+        :root { --neon: #00ffcc; --blue: #0099ff; --pink: #ff00ff; --orange: #ff9900; --bg: #0f172a; --card: #1e293b; --red: #ff4444; --yellow: #ffcc00; --green: #00ff88; }
         body { background-color: var(--bg); color: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 10px; min-height: 100vh; margin: 0; }
         .container { background-color: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 0 40px rgba(0, 255, 204, 0.2); border: 1px solid #334155; max-width: 1200px; width: 100%; box-sizing: border-box; }
-        
         h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-size: 1.5rem; text-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
         .subtitle { text-align: center; color: var(--blue); text-transform: uppercase; letter-spacing: 4px; font-size: 0.7rem; font-weight: 700; margin-bottom: 25px; }
-        
-        @media (min-width: 768px) {
-            h1 { font-size: 2.2rem; letter-spacing: 2px; }
-            .subtitle { font-size: 0.8rem; letter-spacing: 8px; }
-            body { padding: 20px; }
-        }
-
+        @media (min-width: 768px) { h1 { font-size: 2.2rem; letter-spacing: 2px; } .subtitle { font-size: 0.8rem; letter-spacing: 8px; } body { padding: 20px; } }
         .mode-selector select { width: 100%; padding: 12px; background: #161e2d; color: var(--neon); border: 2px solid var(--neon); border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-bottom: 20px; font-family: inherit; }
-        
         .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
         label { font-size: 0.6rem; color: #94a3b8; text-transform: uppercase; font-weight: bold; }
         input, select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        
         .tax-toggle { display: flex; align-items: center; background: rgba(255, 153, 0, 0.1); padding: 10px; border-radius: 10px; border: 1px solid var(--orange); grid-column: 1 / -1; cursor: pointer; }
         .tax-toggle input { width: auto; margin-right: 12px; accent-color: var(--orange); }
-
         button { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--neon), var(--blue)); border: none; color: #0f172a; font-weight: 900; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-
         .main-layout { display: flex; flex-direction: column; gap: 20px; margin-top: 25px; }
         @media (min-width: 1024px) { .main-layout { display: grid; grid-template-columns: 350px 1fr; } }
-
         .result-box { padding: 15px; background: #0b1120; border-radius: 15px; border-left: 5px solid var(--neon); margin-bottom: 10px; }
         .res-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; }
         .res-val { font-size: 1.4rem; color: var(--neon); font-weight: bold; margin-top: 5px; display: block; word-break: break-all; }
-        
         .chart-container { background: #0b1120; padding: 10px; border-radius: 15px; height: 300px; border: 1px solid #334155; position: relative; }
         @media (min-width: 768px) { .chart-container { height: 450px; padding: 20px; } }
-
         .table-wrapper { overflow-x: auto; border: 1px solid #334155; border-radius: 10px; margin-top: 15px; background: #0b1120; }
         table { width: 100%; border-collapse: collapse; font-size: 0.7rem; min-width: 400px; }
         th { background: #1e293b; color: var(--neon); padding: 10px; text-transform: uppercase; }
         td { padding: 8px; border-bottom: 1px solid #334155; text-align: center; }
-
         .user-guide { margin-top: 30px; padding: 20px; background: #161e2d; border-radius: 15px; border: 1px dashed #334155; }
         .guide-h { color: var(--neon); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid #334155; padding-bottom: 10px; }
         .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; font-size: 0.75rem; color: #94a3b8; }
@@ -73,11 +55,9 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>Interés Compuesto</h1>
         <p class="subtitle">Nano Edition</p>
-
         <div class="mode-selector">
             <select id="modo" onchange="cambiarModo()">
                 <option value="ahorro">¿Cuánto dinero tendré en X años?</option>
@@ -86,7 +66,6 @@
                 <option value="interes">¿Qué interés necesito para mi objetivo?</option>
             </select>
         </div>
-        
         <div class="grid-inputs">
             <div id="div-objetivo" style="display:none;"><label>Objetivo (€)</label><input type="number" id="objetivo" value="100000"></div>
             <div><label>Cap. Inicial (€)</label><input type="number" id="capital" value="5000"></div>
@@ -108,9 +87,7 @@
                 </label>
             </div>
         </div>
-
         <button onclick="ejecutarCalculo()">Analizar Plan</button>
-
         <div class="main-layout">
             <div class="data-side">
                 <div class="result-box" id="box-nom">
@@ -132,7 +109,6 @@
                 <div class="chart-container"><canvas id="miGrafico"></canvas></div>
             </div>
         </div>
-
         <div class="user-guide">
             <div class="guide-h">Guía del Inversor</div>
             <div class="guide-grid">
@@ -146,10 +122,8 @@
                 </div>
             </div>
         </div>
-
         <div class="credits">Made by <b>Nano</b></div>
     </div>
-
     <script>
         let grafico;
         function cambiarModo() {
@@ -176,7 +150,6 @@
             const cap = parseFloat(document.getElementById('capital').value) || 0, obj = parseFloat(document.getElementById('objetivo').value) || 0;
             const infla = parseFloat(document.getElementById('inflacion').value) / 100, mom = document.getElementById('momento').value;
             let ap = parseFloat(document.getElementById('aporte').value) || 0, intA = parseFloat(document.getElementById('interes').value) / 100 || 0, anMax = parseInt(document.getElementById('anios').value) || 20;
-
             if (modo === 'interes') {
                 let low = 0, high = 10; for(let i=0; i<40; i++){ let mid = (low + high) / 2; if (fv(cap, ap, mid/12, anMax*12, mom) < obj) low = mid; else high = mid; }
                 intA = high; document.getElementById('res-nom').innerText = (intA * 100).toFixed(2) + " %";
@@ -185,7 +158,6 @@
                 const den = (mom === 'inicio') ? ((factor - 1) / r) * (1 + r) : (factor - 1) / r;
                 ap = (obj - (cap * factor)) / den; document.getElementById('res-nom').innerText = ap.toLocaleString('es-ES', {style: 'currency', currency: 'EUR'});
             }
-
             let bal = cap, tAp = cap, labels = [], dN = [], dR = [], dI = [];
             const tb = document.getElementById('cuerpo-tabla'); tb.innerHTML = "";
             for(let m=1; m <= (modo === 'tiempo' ? 1200 : anMax*12); m++) {
